@@ -7,7 +7,8 @@ const styles = theme => ({
     card: {
         display: 'flex',
         //flexDirection: 'row-reverse',
-        //justifyContent: 'flex-end'
+        justifyContent: 'space-evenly',
+        flexWrap: 'wrap'
     },
     icon: {
         width: 90,
@@ -31,12 +32,14 @@ class ChampionInfo extends React.Component {
     render() {
         let string = "Ahri,the Nine-Tailed Fox"
         const { classes } = this.props
-        let vis = "hidden"
         return (
-            <Grid item visibility={vis}>
-                <Grid container>
+                <Grid item container
+                    spacing={3}
+                    justify="center"
+                    alignItems="center"
+                    direction="column">
                     <Grid item xs={12}  >
-                        <Card fullWidth>
+                        <Card>
                             <CardActionArea className={classes.card} >
                                 <CardMedia
                                     className={classes.icon}
@@ -53,8 +56,91 @@ class ChampionInfo extends React.Component {
                             </CardActionArea>
                         </Card>
                     </Grid>
+                    <Grid item container xs={12} className={classes.card}>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                KDA
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Win Rate %
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Play Rate %
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Ban Rate
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item container xs={12} className={classes.card}>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Damage Dealt
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Damage Dealt To Objectives
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Damage Taken
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Gold Earned
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item container xs={12} className={classes.card}>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Vision Score
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Total Heal
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                Champion Level
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={3}>
+                            <Typography component="h6" variant="h6">
+                                First Blood Kill %
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item container xs={12} className={classes.card}>
+                        <Paper item xs={4}>
+                            <Typography component="h6" variant="h6">
+                                First Tower %
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={4}>
+                            <Typography component="h6" variant="h6">
+                                Lane %
+                            </Typography>
+                        </Paper>
+                        <Paper item xs={4}>
+                            <Typography component="h6" variant="h6">
+                                Duration
+                            </Typography>
+                        </Paper>
+
+                    </Grid>
                 </Grid>
-            </Grid>
         )
     }
 }

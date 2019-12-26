@@ -57,6 +57,7 @@ class App extends React.Component {
 
   constructor() {
     super()
+
     this.state = {
       server: servers[1],
       name: 'Ahri',
@@ -66,9 +67,23 @@ class App extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this)
   }
 
+
+  componentDidMount() {
+    fetch('/api/champions')
+      .then(response => {
+        console.log('!')
+        return response.json()
+      })
+      .then(data => {
+        console.log(JSON.stringify(data))
+        this.setState({ champions: data })
+      });
+  }
+
+
   handleServerChange(event) {
     let server = servers.filter(serv => serv.value === event.target.value)
-    //console.log(JSON.stringify(server[0]))
+    console.log(JSON.stringify(this.state.champions))
     this.setState({
       server: server[0]
     })
@@ -82,7 +97,13 @@ class App extends React.Component {
 
   onKeyPress = (e) => {
     if (e.keyCode === 13) {
-      console.log('Search for ' + this.state.name + ' on server ' + this.state.server.label);
+      let champion = this.state.champions.filter(champ => champ.name === this.state.name.toLowerCase())
+      if (champion.length > 0) {
+        console.log('Search for champion ' + this.state.name);
+      }
+      else {
+        console.log('Search for player ' + this.state.name + ' on server ' + this.state.server.label);
+      }
       // write your functionality here
     }
   }
