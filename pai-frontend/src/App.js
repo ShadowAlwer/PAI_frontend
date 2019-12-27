@@ -50,7 +50,7 @@ const servers = [
   },
 ];
 
-
+const champStatsGet="/api/statistics/champion?name="
 
 
 class App extends React.Component {
@@ -61,6 +61,10 @@ class App extends React.Component {
     this.state = {
       server: servers[1],
       name: 'Ahri',
+      champ: false,
+      player: false,
+      champStats: null,
+      playerStats:null,
     }
 
     this.handleServerChange = this.handleServerChange.bind(this)
@@ -71,11 +75,10 @@ class App extends React.Component {
   componentDidMount() {
     fetch('/api/champions')
       .then(response => {
-        console.log('!')
         return response.json()
       })
       .then(data => {
-        console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
         this.setState({ champions: data })
       });
   }
@@ -83,7 +86,6 @@ class App extends React.Component {
 
   handleServerChange(event) {
     let server = servers.filter(serv => serv.value === event.target.value)
-    console.log(JSON.stringify(this.state.champions))
     this.setState({
       server: server[0]
     })
@@ -100,6 +102,15 @@ class App extends React.Component {
       let champion = this.state.champions.filter(champ => champ.name === this.state.name.toLowerCase())
       if (champion.length > 0) {
         console.log('Search for champion ' + this.state.name);
+
+        fetch(champStatsGet+this.state.name)
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          //console.log(JSON.stringify(data))
+          this.setState({ champStats: data, champ: true })
+        });
       }
       else {
         console.log('Search for player ' + this.state.name + ' on server ' + this.state.server.label);
@@ -163,8 +174,8 @@ class App extends React.Component {
             justify="center"
             alignItems="center"
             direction="column">
-            {true && (<ChampionInfo />)}
-            {true && (<ChampionInfo />)}
+            {this.state.champ && (<ChampionInfo champStats={this.state.champStats}/>)}
+            {this.state.player && (<ChampionInfo />)}
           </Grid>
         </Grid>
       </Grid>

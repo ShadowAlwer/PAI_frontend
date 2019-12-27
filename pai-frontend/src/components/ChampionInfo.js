@@ -23,15 +23,41 @@ const styles = theme => ({
     },
 })
 
+const iconString=process.env.PUBLIC_URL+"/resources/img/champion/tiles/"
+//lower.replace(/^\w/, c => c.toUpperCase());
+
 
 class ChampionInfo extends React.Component {
+
     constructor(props) {
         super(props)
+
+        this.state={
+            champStats: props.champStats
+        }
     }
 
+    static getDerivedStateFromProps(props, state) {
+        // Any time the current user changes,
+        // Reset any parts of state that are tied to that user.
+        // In this simple example, that's just the email.
+        let nameProps=props.champStats.champion_name
+        let nameState=state.champStats.champion_name
+        console.log(nameProps !== nameState)
+        if (nameProps !== nameState) {
+          return {
+            champStats: props.champStats
+          };
+        }
+        return null;
+      }
+
     render() {
-        let string = "Ahri,the Nine-Tailed Fox"
+        let champTitle = this.state.champStats.champion_name.replace(/^\w/, c => c.toUpperCase())
+        let champIcon =iconString+champTitle+"_0.jpg"
         const { classes } = this.props
+
+        console.log(JSON.stringify(this.state.champStats))
         return (
                 <Grid item container
                     spacing={3}
@@ -45,12 +71,12 @@ class ChampionInfo extends React.Component {
                                     className={classes.icon}
                                     component="img"
                                     alt="Champion"
-                                    image="http://placekitten.com/48/48"
+                                    image={champIcon}
                                     title="Champion"
                                 />
                                 <CardContent className={classes.content}>
                                     <Typography component="h4" variant="h4">
-                                        {string}
+                                        {champTitle}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
@@ -59,83 +85,83 @@ class ChampionInfo extends React.Component {
                     <Grid item container xs={12} className={classes.card}>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                KDA
+                                KDA: {this.state.champStats.average_kills.toPrecision(3)}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Win Rate %
+                                Win Rate % {this.state.champStats.win_rate.toPrecision(3)}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Play Rate %
+                                Play Rate % {this.state.champStats.play_rate.toPrecision(3)}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Ban Rate
+                                Ban Rate {this.state.champStats.ban_rate.toPrecision(3)}
                             </Typography>
                         </Paper>
                     </Grid>
                     <Grid item container xs={12} className={classes.card}>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Damage Dealt
+                                Damage Dealt {this.state.champStats.average_damage_defeat.toFixed()}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Damage Dealt To Objectives
+                                Damage Dealt To Objectives {this.state.champStats.average_damage_to_objectives.toFixed()}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Damage Taken
+                                Damage Taken {this.state.champStats.average_damage_taken.toFixed()}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Gold Earned
+                                Gold Earned {this.state.champStats.average_gold_earned.toFixed()}
                             </Typography>
                         </Paper>
                     </Grid>
                     <Grid item container xs={12} className={classes.card}>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Vision Score
+                                Vision Score {this.state.champStats.average_vision_score.toPrecision(3)}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Total Heal
+                                Total Heal {this.state.champStats.average_total_heal.toFixed()}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                Champion Level
+                                Champion Level {this.state.champStats.average_champion_level.toPrecision(3)}
                             </Typography>
                         </Paper>
                         <Paper item xs={3}>
                             <Typography component="h6" variant="h6">
-                                First Blood Kill %
+                                First Blood Kill % {this.state.champStats.first_blood_kill.toPrecision(3)}
                             </Typography>
                         </Paper>
                     </Grid>
                     <Grid item container xs={12} className={classes.card}>
                         <Paper item xs={4}>
                             <Typography component="h6" variant="h6">
-                                First Tower %
+                                First Tower % {this.state.champStats.first_tower.toPrecision(3)}
                             </Typography>
                         </Paper>
                         <Paper item xs={4}>
                             <Typography component="h6" variant="h6">
-                                Lane %
+                                Lane {this.state.champStats.lane}
                             </Typography>
                         </Paper>
                         <Paper item xs={4}>
                             <Typography component="h6" variant="h6">
-                                Duration
+                                Duration {(this.state.champStats.average_game_duration/60).toPrecision(3)} min
                             </Typography>
                         </Paper>
 
