@@ -50,7 +50,7 @@ const servers = [
 ];
 
 const champStatsGet="/api/statistics/champion?name="
-
+const playerStatsGet="/api/statistics/summoner?"
 
 class App extends React.Component {
 
@@ -59,11 +59,11 @@ class App extends React.Component {
 
     this.state = {
       server: servers[1],
-      name: 'Ahri',
+      name: 'suszek1996',
       champ: false,
       player: false,
       champStats: null,
-      playerStats:null,
+      playerStats: null,
     }
 
     this.handleServerChange = this.handleServerChange.bind(this)
@@ -121,6 +121,18 @@ class App extends React.Component {
     }
     else {
       console.log('Search for player ' + this.state.name + ' on server ' + this.state.server.label);
+
+      fetch(playerStatsGet+"region="+this.state.server.value+"&name="+this.state.name)
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        console.log(JSON.stringify(data))
+        this.setState({ playerStats: data, 
+                        champ: false,
+                        player: true })
+      });
+
     }
   }
 
@@ -182,7 +194,7 @@ class App extends React.Component {
             alignItems="center"
             direction="column">
             {this.state.champ && (<ChampionInfo champStats={this.state.champStats}/>)}
-            {this.state.player && (<ChampionInfo />)}
+            {this.state.player}
           </Grid>
         </Grid>
       </Grid>
