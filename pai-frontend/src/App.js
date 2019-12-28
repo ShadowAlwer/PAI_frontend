@@ -1,6 +1,5 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
+import {Grid, Button, TextField} from '@material-ui/core';
 import ChampionInfo from './components/ChampionInfo'
 
 const servers = [
@@ -69,6 +68,7 @@ class App extends React.Component {
 
     this.handleServerChange = this.handleServerChange.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
+    this.searchStats= this.searchStats.bind(this)
   }
 
 
@@ -99,26 +99,30 @@ class App extends React.Component {
 
   onKeyPress = (e) => {
     if (e.keyCode === 13) {
-      let champion = this.state.champions.filter(champ => champ.name === this.state.name.toLowerCase())
-      if (champion.length > 0) {
-        console.log('Search for champion ' + this.state.name);
-
-        fetch(champStatsGet+this.state.name)
-        .then(response => {
-          return response.json()
-        })
-        .then(data => {
-          //console.log(JSON.stringify(data))
-          this.setState({ champStats: data, champ: true })
-        });
-      }
-      else {
-        console.log('Search for player ' + this.state.name + ' on server ' + this.state.server.label);
-      }
-      // write your functionality here
+        this.searchStats()
     }
   }
 
+  searchStats(){
+    let champion = this.state.champions.filter(champ => champ.name === this.state.name.toLowerCase())
+    if (champion.length > 0) {
+      console.log('Search for champion ' + this.state.name);
+
+      fetch(champStatsGet+this.state.name)
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        //console.log(JSON.stringify(data))
+        this.setState({ champStats: data, 
+                        champ: true,
+                        player: false })
+      });
+    }
+    else {
+      console.log('Search for player ' + this.state.name + ' on server ' + this.state.server.label);
+    }
+  }
 
 
   render() {
@@ -134,7 +138,6 @@ class App extends React.Component {
             spacing={2}
             alignItems='center'
             justify='center'>
-            <Grid item xs={2} />
             <Grid item xs={6}>
               <TextField
                 id="standard-basic"
@@ -144,7 +147,7 @@ class App extends React.Component {
                 onKeyDown={this.onKeyPress}
                 fullWidth />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={1}>
               <TextField
                 id="server-select"
                 select
@@ -164,13 +167,17 @@ class App extends React.Component {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={2} />
+            <Grid item xs={2}>
+            <Button variant="contained" color="primary" onClick={this.searchStats}>
+              Search
+            </Button>
+            </Grid>
           </Grid>
         </Grid>
         <Grid item>
           <Grid
             container
-            spacing={3}
+            spacing={2}
             justify="center"
             alignItems="center"
             direction="column">
