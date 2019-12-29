@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Button, TextField} from '@material-ui/core';
 import ChampionInfo from './components/ChampionInfo'
+import PlayerInfo from './components/PlayerInfo'
 
 const servers = [
   {
@@ -194,7 +195,7 @@ class App extends React.Component {
             alignItems="center"
             direction="column">
             {this.state.champ && (<ChampionInfo champStats={this.state.champStats}/>)}
-            {this.state.player}
+            {this.state.player && <PlayerInfo playerStats={this.state.playerStats}/>}
           </Grid>
         </Grid>
       </Grid>
