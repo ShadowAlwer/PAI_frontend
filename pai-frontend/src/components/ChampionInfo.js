@@ -3,6 +3,9 @@ import { Grid, Card, CardActionArea, CardMedia, Paper, CardContent, Typography }
 import { withStyles } from '@material-ui/styles'
 
 
+
+const AnimationName="anim-name"
+
 const styles = theme => ({
     card: {
         display: 'flex',
@@ -21,10 +24,53 @@ const styles = theme => ({
         paddingRight: 6,
 
     },
-    footer:{
+    footer: {
         display: 'flex',
         flexDirection: 'row-reverse',
-    }
+    },
+    gradientAnim: {
+
+        display: 'flex',
+        background: 'linear-gradient(270deg, #00dafb, #fbea00, #fb2300, #02b900, #fb00db)',
+        backgroundSize: '1000% 1000%',
+
+        //WebkitAnimation: 'AnimationName 31s ease infinite',
+        MozAnimation: `$${AnimationName} 31s ease infinite`,
+        animation: `$${AnimationName} 31s ease infinite`,
+        /*  
+          '@webkit-keyframes AnimationName': {
+              '0%':{backgroundPosition:'0% 50%'},
+              '50%':{backgroundPosition:'100% 50%'},
+              '100%':{backgroundPosition:'0% 50%'},
+          },
+          '@-moz-keyframes AnimationName': {
+              '0%':{backgroundPosition:'0% 50%'},
+              '50%':{backgroundPosition:'100% 50%'},
+              '100%':{backgroundPosition:'0% 50%'},
+          },*/         
+    },
+    [`@-moz-keyframes ${AnimationName}`]: {
+        '0%':{
+            backgroundPosition:'0% 50%'
+          },
+        '50%':{
+            backgroundPosition:'100% 50%'
+          },
+        '100%':{
+            backgroundPosition:'0% 50%'
+          },
+    },
+      [`@keyframes ${AnimationName}`]: {
+          '0%':{
+              backgroundPosition:'0% 50%'
+            },
+          '50%':{
+              backgroundPosition:'100% 50%'
+            },
+          '100%':{
+              backgroundPosition:'0% 50%'
+            },
+      },
 })
 
 //const iconString = process.env.PUBLIC_URL + "/resources/img/champion/tiles/"
@@ -54,7 +100,7 @@ class ChampionInfo extends React.Component {
     }
 
     getChampTitle() {
-        let champTitle= this.state.champStats.champion_name.replace(/^\w/, c => c.toUpperCase())
+        let champTitle = this.state.champStats.champion_name.replace(/^\w/, c => c.toUpperCase())
         champTitle = champTitle.replace(/\b(\w)/g, c => c.toUpperCase())
         champTitle = champTitle.replace(/\s+/g, '')
         return champTitle
@@ -83,7 +129,7 @@ class ChampionInfo extends React.Component {
                 direction="column">
                 <Grid item xs={12}  >
                     <Card>
-                        <CardActionArea className={classes.card} >
+                        <CardActionArea className={classes.gradientAnim} >
                             <CardMedia
                                 className={classes.icon}
                                 component="img"
@@ -214,11 +260,11 @@ class ChampionInfo extends React.Component {
                     </Grid>
                 </Grid>
                 <Grid item container xs={12} className={classes.footer} spacing={2} >
-                <Grid item xs={1} />
-                <Grid item xs={2}>
+                    <Grid item xs={1} />
+                    <Grid item xs={2}>
                         <Paper>
-                            <Typography  variant="subtitle1">
-                                Games analized {this.state.champStats.analyzed_games} 
+                            <Typography variant="subtitle1">
+                                Games analized {this.state.champStats.analyzed_games}
                             </Typography>
                         </Paper>
                     </Grid>
