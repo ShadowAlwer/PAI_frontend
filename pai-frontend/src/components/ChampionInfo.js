@@ -1,7 +1,7 @@
 import React from 'react'
-import { Grid, Card, CardActionArea, CardMedia, Paper, CardContent, Typography } from '@material-ui/core'
+import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
-
+import InfoBrick from './InfoBrick'
 
 
 const AnimationName="anim-name"
@@ -96,6 +96,8 @@ class ChampionInfo extends React.Component {
 
     getChampTitle() {
         let champTitle = this.state.champStats.champion_name.replace(/^\w/, c => c.toUpperCase())
+        champTitle = champTitle.replace(".", "")
+        champTitle = champTitle.replace("'", "")
         champTitle = champTitle.replace(/\b(\w)/g, c => c.toUpperCase())
         champTitle = champTitle.replace(/\s+/g, '')
         return champTitle
@@ -106,6 +108,10 @@ class ChampionInfo extends React.Component {
         if (champTitle === "Wukong") {
             champTitle = "MonkeyKing"
         }
+        if(champTitle=== "Kogmaw"){
+            champTitle="KogMaw"
+        }
+
         return dataDragonIcon + champTitle + "_0.jpg"
     }
 
@@ -142,127 +148,31 @@ class ChampionInfo extends React.Component {
                 </Grid>
                 <Grid item container xs={12} className={classes.card} spacing={2}>
                     <Grid item xs={1} />
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                KDA {this.state.champStats.average_kills.toPrecision(3)}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Win Rate {this.state.champStats.win_rate.toPrecision(3)}%
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Play Rate {this.state.champStats.play_rate.toPrecision(3)}%
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Ban Rate {this.state.champStats.ban_rate.toPrecision(3)}%
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Lane {this.state.champStats.lane}
-                            </Typography>
-                        </Paper>
-                    </Grid>
+                    <InfoBrick prefix="KDA" value={this.state.champStats.average_kills.toPrecision(3)}/>
+                    <InfoBrick prefix="Win rate" value={this.state.champStats.win_rate.toPrecision(3)} sufix="%" />
+                    <InfoBrick prefix="Play rate" value={this.state.champStats.play_rate.toPrecision(3)} sufix="%" />
+                    <InfoBrick prefix="Ban rate" value={this.state.champStats.ban_rate.toPrecision(3)} sufix="%"/>
+                    <InfoBrick prefix="Lane" value={this.state.champStats.lane}/>
                 </Grid>
                 <Grid item container xs={12} className={classes.card} spacing={2}>
                     <Grid item xs={1} />
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                DMG Dealt {this.state.champStats.average_damage_defeat.toFixed()}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                DMG Objectives {this.state.champStats.average_damage_to_objectives.toFixed()}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                DMG Taken {this.state.champStats.average_damage_taken.toFixed()}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Gold Earned {this.state.champStats.average_gold_earned.toFixed()}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                First Tower {this.state.champStats.first_tower.toPrecision(3)}%
-                            </Typography>
-                        </Paper>
-                    </Grid>
+                    <InfoBrick prefix="DMG Dealt" value={this.state.champStats.average_damage_defeat.toFixed()}/>
+                    <InfoBrick prefix="Objective DMG" value={this.state.champStats.average_damage_to_objectives.toFixed()}/>
+                    <InfoBrick prefix="DMG Taken" value={this.state.champStats.average_damage_taken.toFixed()}/>
+                    <InfoBrick prefix="Avg Gold " value={this.state.champStats.average_gold_earned.toFixed()} />
+                    <InfoBrick prefix="First Tower" value={this.state.champStats.first_tower.toFixed(2)} sufix="%" />
                 </Grid>
                 <Grid item container xs={12} className={classes.card} spacing={2}>
                     <Grid item xs={1} />
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Vision Score {this.state.champStats.average_vision_score.toPrecision(3)}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Total Heal {this.state.champStats.average_total_heal.toFixed()}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Champion Level {this.state.champStats.average_champion_level.toPrecision(3)}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                First Blood Kill {this.state.champStats.first_blood_kill.toPrecision(3)}%
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Duration {(this.state.champStats.average_game_duration / 60).toPrecision(3)} min
-                            </Typography>
-                        </Paper>
-                    </Grid>
+                    <InfoBrick prefix="Avg Vision " value={this.state.champStats.average_vision_score.toFixed()} />
+                    <InfoBrick prefix="Avg Heal" value={this.state.champStats.average_total_heal.toFixed()} />
+                    <InfoBrick prefix="Avg LVL" value={this.state.champStats.average_champion_level.toFixed()} />
+                    <InfoBrick prefix="First Blood" value={this.state.champStats.first_blood_kill.toFixed(2)} sufix="%" />
+                    <InfoBrick prefix="Duration" value={Math.ceil(this.state.champStats.average_game_duration % 60)} sufix="min" />
                 </Grid>
                 <Grid item container xs={12} className={classes.footer} spacing={2} >
                     <Grid item xs={1} />
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography variant="subtitle1">
-                                Games analized {this.state.champStats.analyzed_games}
-                            </Typography>
-                        </Paper>
-                    </Grid>
+                    <InfoBrick prefix="Game analized" value={this.state.champStats.analyzed_games} variant="subtitle1"/>
                 </Grid>
             </Grid>
         )

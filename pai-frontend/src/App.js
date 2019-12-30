@@ -194,7 +194,7 @@ class App extends React.Component {
             justify="center"
             alignItems="center"
             direction="column">
-            {this.state.champ && (<ChampionInfo champStats={this.state.champStats}/>)}
+            {this.state.champ && <ChampionInfo champStats={this.state.champStats}/>}
             {this.state.player && <PlayerInfo playerStats={this.state.playerStats}/>}
           </Grid>
         </Grid>

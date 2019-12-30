@@ -1,6 +1,9 @@
 import React from 'react'
-import { Grid, Card, CardActionArea, CardMedia, Paper, CardContent, Typography } from '@material-ui/core'
+import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
+import InfoBrick from './InfoBrick'
+import GameHistoryItem from './GameHistoryItem'
+import ChampMasteryItem from './ChampMasteryItem'
 
 const AnimationName = "anim-name"
 
@@ -9,6 +12,11 @@ const styles = theme => ({
         display: 'flex',
         //flexDirection: 'row-reverse',
         //justifyContent: 'space-evenly',
+        flexWrap: 'wrap'
+    },
+    rankeds: {
+        display: 'flex',
+        flexDirection: 'row-reverse',
         flexWrap: 'wrap'
     },
     icon: {
@@ -97,6 +105,23 @@ class PlayerInfo extends React.Component {
         let playerName = this.state.playerStats.name
         const { classes } = this.props
 
+        let rankeds=this.state.playerStats.rankeds.map(queue=> <InfoBrick 
+                                                                key={queue.queue_type}
+                                                                prefix={queue.queue_type.replace("RANKED ", "")}
+                                                                value={queue.tier+" "+queue.rank}
+                                                                />)
+        
+        let id=0;
+        let history=this.state.playerStats.history.map(game=> <GameHistoryItem
+                                                                key={id++}
+                                                                game={game}
+                                                                />)
+        id=0;
+        let mastery=this.state.playerStats.masteries.map(mastery => <ChampMasteryItem
+                                                                        key={id++}
+                                                                        mastery={mastery}
+                                                                        />)
+
         return (
             <Grid item container
                 spacing={2}
@@ -123,21 +148,24 @@ class PlayerInfo extends React.Component {
                 </Grid>
                 <Grid item container xs={12} className={classes.card} spacing={2}>
                     <Grid item xs={4} />
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                LVL {this.state.playerStats.summoner_level}
-                            </Typography>
-                        </Paper>
+                    <InfoBrick prefix="LVL" value={this.state.playerStats.summoner_level}/>
+                    <InfoBrick prefix="Mastery" value={this.state.playerStats.mastery_score}/>
+                </Grid>
+                <Grid item container xs={12} className={classes.rankeds} spacing={2}>
+                    <Grid item xs={3}/>
+                    {rankeds}
+                </Grid>
+                <Grid item container xs={12} className={classes.card} spacing={2}>
+                    <Grid item xs={3}/>
+                    <Grid item container xs={3} xy={12} spacing={1}>
+                        <InfoBrick prefix="Game History" xs={12} xy={2}/>
+                       {history}
                     </Grid>
-                    <Grid item xs={2}>
-                        <Paper>
-                            <Typography component="h6" variant="h6">
-                                Mastery {this.state.playerStats.mastery_score}
-                            </Typography>
-                        </Paper>
+                    <Grid item container xs={3} xy={12} spacing={1}>
+                        <InfoBrick prefix="Champion Mastery" xs={12}/>
+                        {mastery}
                     </Grid>
-                    </Grid>
+                </Grid>
             </Grid>
         )
     }
