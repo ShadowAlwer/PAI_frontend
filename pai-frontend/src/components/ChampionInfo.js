@@ -148,7 +148,7 @@ class ChampionInfo extends React.Component {
                 </Grid>
                 <Grid item container xs={12} className={classes.card} spacing={2}>
                     <Grid item xs={1} />
-                    <InfoBrick prefix="KDA" value={this.state.champStats.average_kills.toPrecision(3)}/>
+                    <InfoBrick prefix="KDA" value={this.state.champStats.average_kills.toPrecision(3)+"/"}/>
                     <InfoBrick prefix="Win rate" value={this.state.champStats.win_rate.toPrecision(3)} sufix="%" />
                     <InfoBrick prefix="Play rate" value={this.state.champStats.play_rate.toPrecision(3)} sufix="%" />
                     <InfoBrick prefix="Ban rate" value={this.state.champStats.ban_rate.toPrecision(3)} sufix="%"/>
@@ -168,7 +168,7 @@ class ChampionInfo extends React.Component {
                     <InfoBrick prefix="Avg Heal" value={this.state.champStats.average_total_heal.toFixed()} />
                     <InfoBrick prefix="Avg LVL" value={this.state.champStats.average_champion_level.toFixed()} />
                     <InfoBrick prefix="First Blood" value={this.state.champStats.first_blood_kill.toFixed(2)} sufix="%" />
-                    <InfoBrick prefix="Duration" value={Math.ceil(this.state.champStats.average_game_duration % 60)} sufix="min" />
+                    <InfoBrick prefix="Duration" value={Math.ceil(this.state.champStats.average_game_duration / 60)} sufix="min" />
                 </Grid>
                 <Grid item container xs={12} className={classes.footer} spacing={2} >
                     <Grid item xs={1} />
