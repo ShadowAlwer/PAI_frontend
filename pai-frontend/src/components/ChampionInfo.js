@@ -173,7 +173,7 @@ class ChampionInfo extends React.Component {
                 <Grid item container xs={12} className={classes.card} spacing={2}>
                     <Grid item xs={1} />
                     <InfoBrick prefix="CS per min" value={this.state.champStats.cs_per_minute.toFixed()} />
-                    <InfoBrick prefix="First item" value={this.state.champStats.first_item_id} />
+                    <InfoBrick prefix="First item" value={this.state.champStats.first_item_id} image />
                 </Grid>
                 <Grid item container xs={12} className={classes.footer} spacing={2} >
                     <Grid item xs={1} />
