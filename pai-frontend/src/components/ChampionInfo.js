@@ -177,7 +177,7 @@ class ChampionInfo extends React.Component {
                 </Grid>
                 <Grid item container xs={12} className={classes.footer} spacing={2} >
                     <Grid item xs={1} />
-                    <InfoBrick prefix="Game analized" value={this.state.champStats.analyzed_games} variant="subtitle1"/>
+                    <InfoBrick prefix="Game analized" value={this.state.champStats.analyzed_games} variant="caption"/>
                 </Grid>
             </Grid>
         )

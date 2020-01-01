@@ -24,7 +24,7 @@ class InfoBrick extends React.Component{
         let{classes}=this.props
 
         let content=(<Paper >
-                        <Typography component={variant} variant={variant}>
+                        <Typography component="h6" variant={variant}>
                             {this.props.prefix} {this.props.value} {this.props.sufix}
                         </Typography>
                     </Paper>)
@@ -32,7 +32,7 @@ class InfoBrick extends React.Component{
         if(typeof this.props.image!=="undefined"){
             
             content=(<Paper className={classes.paper}>
-                        <Typography component={variant} variant={variant}>
+                        <Typography component="h6" variant={variant}>
                             {this.props.prefix} 
                         </Typography>
                         <img src={itemIcon} alt="item" width="32" height="32"/>
