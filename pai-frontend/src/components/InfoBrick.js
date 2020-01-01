@@ -6,7 +6,11 @@ const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/9.3.1/img/item/"
 
 const styles = theme => ({
     paper: {
+        root:{
 
+        },
+        background: '#363538',
+        color: 'white',
         display: 'flex',
         alignItems:'center',
         justifyContent:'space-between'
@@ -23,7 +27,7 @@ class InfoBrick extends React.Component{
         let itemIcon=dataDragonIcon+this.props.value+".png"
         let{classes}=this.props
 
-        let content=(<Paper >
+        let content=(<Paper className={classes.paper} >
                         <Typography component="h6" variant={variant}>
                             {this.props.prefix} {this.props.value} {this.props.sufix}
                         </Typography>

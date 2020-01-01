@@ -96,7 +96,6 @@ class ChampionInfo extends React.Component {
         let champIcon = getIconString(this.state.champStats.champion_name)
         const { classes } = this.props
 
-        console.log(JSON.stringify(this.state.champStats))
         return (
             <Grid item container
                 spacing={2}

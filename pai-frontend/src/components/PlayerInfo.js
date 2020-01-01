@@ -74,7 +74,7 @@ const styles = theme => ({
     },
 })
 
-const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/9.3.1/img/profileicon/"
+const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/9.23.1/img/profileicon/"
 
 class PlayerInfo extends React.Component {
 
@@ -151,8 +151,7 @@ class PlayerInfo extends React.Component {
                     <InfoBrick prefix="LVL" value={this.state.playerStats.summoner_level}/>
                     <InfoBrick prefix="Mastery" value={this.state.playerStats.mastery_score}/>
                 </Grid>
-                <Grid item container xs={12} className={classes.rankeds} spacing={2}>
-                    <Grid item xs={3}/>
+                <Grid item container xs={12} className={classes.rankeds} spacing={2} justify="center" >
                     {rankeds}
                 </Grid>
                 <Grid item container xs={12} className={classes.card} spacing={2}>

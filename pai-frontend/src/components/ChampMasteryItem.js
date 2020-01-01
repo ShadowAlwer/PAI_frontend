@@ -6,7 +6,23 @@ import {getChampTitle, getIconString} from './Helpers'
 const styles = theme => ({
     card: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        background:'#ccc6d1'
+    },
+    card7:{
+        display: 'flex',
+        flexWrap: 'wrap',
+        background: '#08b2e3'
+    },
+    card6:{
+        display: 'flex',
+        flexWrap: 'wrap',
+        background: '#b96be0'
+    },
+    card5:{
+        display: 'flex',
+        flexWrap: 'wrap',
+        background: '#ee6352'
     },
     icon: {
         width: 90,
@@ -30,11 +46,25 @@ class GameHistoryItem extends React.Component{
         let champIcon = getIconString(this.props.mastery.champion_name)
         const { classes } = this.props
         let mastery=this.props.mastery
+        let card=classes.card
+        switch(mastery.champion_level){
+            case 7:
+                card=classes.card7
+                break
+            case 6:
+                card=classes.card6
+                break
+            case 5:
+                card=classes.card5
+                break
+            default:
+                break;
+        }
 
         return(
             <Grid item >
                     <Card>
-                        <CardActionArea className={classes.card} >
+                        <CardActionArea className={card} >
                             <CardMedia
                                 className={classes.icon}
                                 component="img"

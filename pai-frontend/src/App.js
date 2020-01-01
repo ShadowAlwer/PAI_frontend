@@ -8,7 +8,8 @@ import{servers} from './components/Data'
 
 
 const styles = theme => ({
-  card: {
+
+ card: {
       display: 'flex',
       //flexDirection: 'row-reverse',
       //justifyContent: 'space-evenly',
@@ -26,6 +27,23 @@ const styles = theme => ({
       paddingRight: 6,
 
   },
+  option: {
+    background: '#484d6d',
+    color: "white",
+    '&:hover': {
+      background:'#2d3044'
+    }
+  },
+  list:{
+    color: "white",
+    background: '#484d6d',
+  },
+  menuPaper:{
+    background: '#484d6d',
+  },
+  input:{
+    color: "white",
+  }
 })
 
 
@@ -105,7 +123,7 @@ class App extends React.Component {
           return response.json()
         })
         .then(data => {
-          //console.log(JSON.stringify(data))
+          console.log(JSON.stringify(data))
           this.setState({
             champStats: data,
             champ: true,
@@ -121,7 +139,7 @@ class App extends React.Component {
           return response.json()
         })
         .then(data => {
-          //console.log(JSON.stringify(data))
+          console.log(JSON.stringify(data))
           this.setState({
             playerStats: data,
             champ: false,
@@ -160,15 +178,16 @@ class App extends React.Component {
     const id = open ? 'popover' : undefined;
     const{classes}=this.props
     
-    let popoverContent=null
+    let key=0
+    let popoverContent=<div/>
     if(open){
       popoverContent=this.state.champions.filter(champ => champ.name.includes(this.state.name.toLowerCase())).map((champ)=>{
 
         let champTitle = getChampTitle(champ.name)
         let champIcon = getIconString(champ.name)
 
-        return(<Card>
-        <CardActionArea className={classes.card} onClick={()=>this.handlePopoverClick(champ.name)} >
+        return(<Card key={key++}>
+        <CardActionArea  className={classes.card} onClick={()=>this.handlePopoverClick(champ.name)} >
           <CardMedia
             className={classes.icon}
             component="img"
@@ -205,18 +224,19 @@ class App extends React.Component {
                 label="Search for a Player or Champion"
                 onChange={this.handleNameChange}
                 onKeyDown={this.onKeyPress}
+                color="secondary"
                 fullWidth 
-                autoFocus={true}/>
+                autoFocus={true}
+                InputProps={{
+                  className: classes.input
+                }}/>
                 <Popper
                   id={id}
                   open={open}
                   anchorEl={this.state.anchorEl}
                   onClose={this.handlePopoverClose}
+                  children
                   placement='bottom-start'
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
                 >
                     {popoverContent}
                 </Popper>
@@ -229,13 +249,19 @@ class App extends React.Component {
                 value={this.state.server.value}
                 onChange={this.handleServerChange}
                 onKeyDown={this.onKeyPress}
+                color="secondary"
                 SelectProps={{
-                  native: true,
+                  className:classes.list,
+                  MenuProps:{
+                    classes:{
+                      paper: classes.menuPaper,
+                    },
+                  }
                 }}
               //helperText="Please select server"
               >
                 {servers.map(option => (
-                  <option key={option.value} value={option.value} label={option.label}>
+                  <option className={classes.option} key={option.value} value={option.value} label={option.label}>
                     {option.label}
                   </option>
                 ))}

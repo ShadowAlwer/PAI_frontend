@@ -1,14 +1,18 @@
 import React from "react"
 import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
-import {getChampTitle, getIconString} from './Helpers'
+import {getChampTitle, getIconString, zeroPad} from './Helpers'
 
 const styles = theme => ({
-    card: {
+    cardWin: {
         display: 'flex',
-        //flexDirection: 'row-reverse',
-        //justifyContent: 'space-evenly',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        background: '#57a773'
+    },
+    cardDefeat:{
+        display: 'flex',
+        flexWrap: 'wrap',
+        background: '#ee6352'
     },
     icon: {
         width: 90,
@@ -33,11 +37,11 @@ class GameHistoryItem extends React.Component{
         let champIcon = getIconString(this.props.game.champion_name)
         const { classes } = this.props
         let game=this.props.game
-
+        let card=game.win?classes.cardWin: classes.cardDefeat
         return(
             <Grid item >
                     <Card>
-                        <CardActionArea className={classes.card} >
+                        <CardActionArea className={card} >
                             <CardMedia
                                 className={classes.icon}
                                 component="img"
@@ -47,10 +51,13 @@ class GameHistoryItem extends React.Component{
                             />
                             <CardContent className={classes.content} >
                                 <Typography>
-                                    {game.map} {game.win ?  "Win" :"Losse"}
+                                    {game.map} {game.win ?  "Win" :"Defeat"}
                                 </Typography>
                                 <Typography>
                                     KDA {game.kills}/{game.deaths}/{game.assists}                        
+                                </Typography>
+                                <Typography variant="caption">
+                                    cs {game.cs} {"|"} {(game.game_duration/60).toFixed()}:{zeroPad(game.game_duration%60,2)} min                    
                                 </Typography>
                             </CardContent>
                         </CardActionArea>

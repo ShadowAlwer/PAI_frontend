@@ -23,6 +23,12 @@ export function getIconString(champ_name) {
     if(champTitle=== "Kogmaw"){
         champTitle="KogMaw"
     }
+    if(champTitle==="Fiddlesticks"){
+        champTitle="FiddleSticks"
+    }
 
     return dataDragonIcon + champTitle + "_0.jpg"
 }
+
+
+export function  zeroPad(num, places){ return String(num).padStart(places, '0')}
