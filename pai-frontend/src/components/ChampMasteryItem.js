@@ -1,6 +1,7 @@
 import React from "react"
 import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
+import {getChampTitle, getIconString} from './Helpers'
 
 const styles = theme => ({
     card: {
@@ -21,37 +22,12 @@ const styles = theme => ({
     },
 })
 
-const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/"
-
-
 class GameHistoryItem extends React.Component{
-
-    getChampTitle() {
-        let champTitle = this.props.mastery.champion_name.replace(/^\w/, c => c.toUpperCase())
-        champTitle = champTitle.replace(".", "")
-        champTitle = champTitle.replace("'", "")
-        champTitle = champTitle.replace(/\b(\w)/g, c => c.toUpperCase())
-        champTitle = champTitle.replace(/\s+/g, '')
-        return champTitle
-    }
-
-    getIconString() {
-        let champTitle = this.getChampTitle()
-        if (champTitle === "Wukong") {
-            champTitle = "MonkeyKing"
-        }
-        if(champTitle=== "Kogmaw"){
-            champTitle="KogMaw"
-        }
-
-
-        return dataDragonIcon + champTitle + "_0.jpg"
-    }
 
     render(){
 
-        let champTitle = this.getChampTitle()
-        let champIcon = this.getIconString()
+        let champTitle = getChampTitle(this.props.mastery.champion_name)
+        let champIcon = getIconString(this.props.mastery.champion_name)
         const { classes } = this.props
         let mastery=this.props.mastery
 

@@ -1,55 +1,11 @@
 import React from 'react';
-import { Grid, Button, TextField, Popover, Card, CardActionArea, CardContent, CardMedia, Typography, Popper } from '@material-ui/core';
+import { Grid, Button, TextField, Card, CardActionArea, CardContent, CardMedia, Typography, Popper } from '@material-ui/core';
 import ChampionInfo from './components/ChampionInfo'
 import { withStyles } from '@material-ui/styles'
 import PlayerInfo from './components/PlayerInfo'
+import {getChampTitle, getIconString} from './components/Helpers'
+import{servers} from './components/Data'
 
-const servers = [
-  {
-    value: 'KR',
-    label: 'KR',
-  },
-  {
-    value: 'EUN1',
-    label: 'EUNE',
-  },
-  {
-    value: 'EUW1',
-    label: 'EUW',
-  },
-  {
-    value: 'RU',
-    label: 'RU',
-  },
-  {
-    value: 'JP1',
-    label: 'JP',
-  },
-  {
-    value: 'BR1',
-    label: 'BR',
-  },
-  {
-    value: 'LA1',
-    label: 'LAN',
-  },
-  {
-    value: 'LA2',
-    label: 'LAS',
-  },
-  {
-    value: 'NA1',
-    label: 'NA',
-  },
-  {
-    value: 'OC1',
-    label: 'OCE',
-  },
-  {
-    value: 'TR1',
-    label: 'TR',
-  },
-];
 
 const styles = theme => ({
   card: {
@@ -73,7 +29,6 @@ const styles = theme => ({
 })
 
 
-const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/"
 const champStatsGet = "/api/statistics/champion?name="
 const playerStatsGet = "/api/statistics/summoner?"
 
@@ -140,6 +95,7 @@ class App extends React.Component {
   }
 
   searchStats() {
+    this.handlePopoverClose()
     let champion = this.state.champions.filter(champ => champ.name === this.state.name.toLowerCase())
     if (champion.length > 0) {
       console.log('Search for champion ' + this.state.name);
@@ -189,29 +145,10 @@ class App extends React.Component {
         })
   }
 
-  getChampTitle(champ_name) {
-    let champTitle = champ_name.replace(/^\w/, c => c.toUpperCase())
-    champTitle = champTitle.replace(".", "")
-    champTitle = champTitle.replace("'", "")
-    champTitle = champTitle.replace(/\b(\w)/g, c => c.toUpperCase())
-    champTitle = champTitle.replace(/\s+/g, '')
-    return champTitle
-}
 
-getIconString(champ_name) {
-    let champTitle = this.getChampTitle(champ_name)
-    if (champTitle === "Wukong") {
-        champTitle = "MonkeyKing"
-    }
-    if(champTitle=== "Kogmaw"){
-        champTitle="KogMaw"
-    }
-
-    return dataDragonIcon + champTitle + "_0.jpg"
-}
 
   handlePopoverClick(name){
-    console.log("Click popover")
+    this.handlePopoverClose()
     this.setState({
       name: name
     })
@@ -228,8 +165,8 @@ getIconString(champ_name) {
     if(open){
       popoverContent=this.state.champions.filter(champ => champ.name.includes(this.state.name.toLowerCase())).map((champ)=>{
 
-        let champTitle = this.getChampTitle(champ.name)
-        let champIcon = this.getIconString(champ.name)
+        let champTitle = getChampTitle(champ.name)
+        let champIcon = getIconString(champ.name)
 
         return(<Card>
         <CardActionArea className={classes.card} onClick={()=>this.handlePopoverClick(champ.name)} >

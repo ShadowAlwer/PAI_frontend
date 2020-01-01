@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
 import InfoBrick from './InfoBrick'
-
+import {getChampTitle, getIconString} from './Helpers'
 
 const AnimationName="anim-name"
 
@@ -68,10 +68,6 @@ const styles = theme => ({
       },
 })
 
-//const iconString = process.env.PUBLIC_URL + "/resources/img/champion/tiles/"
-const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/img/champion/tiles/"
-
-
 class ChampionInfo extends React.Component {
 
     constructor(props) {
@@ -94,31 +90,10 @@ class ChampionInfo extends React.Component {
         return null;
     }
 
-    getChampTitle() {
-        let champTitle = this.state.champStats.champion_name.replace(/^\w/, c => c.toUpperCase())
-        champTitle = champTitle.replace(".", "")
-        champTitle = champTitle.replace("'", "")
-        champTitle = champTitle.replace(/\b(\w)/g, c => c.toUpperCase())
-        champTitle = champTitle.replace(/\s+/g, '')
-        return champTitle
-    }
-
-    getIconString() {
-        let champTitle = this.getChampTitle()
-        if (champTitle === "Wukong") {
-            champTitle = "MonkeyKing"
-        }
-        if(champTitle=== "Kogmaw"){
-            champTitle="KogMaw"
-        }
-
-        return dataDragonIcon + champTitle + "_0.jpg"
-    }
-
     render() {
 
-        let champTitle = this.getChampTitle()
-        let champIcon = this.getIconString()
+        let champTitle = getChampTitle(this.state.champStats.champion_name)
+        let champIcon = getIconString(this.state.champStats.champion_name)
         const { classes } = this.props
 
         console.log(JSON.stringify(this.state.champStats))
