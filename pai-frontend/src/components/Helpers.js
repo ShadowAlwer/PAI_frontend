@@ -7,6 +7,11 @@ export function  getChampTitle(champ_name) {
     champTitle = champTitle.replace("'", "")
     champTitle = champTitle.replace(/\b(\w)/g, c => c.toUpperCase())
     champTitle = champTitle.replace(/\s+/g, '')
+
+    if(champTitle==="JarvanIv"){
+        champTitle="JarvanIV"
+      }
+
     return champTitle
 }
 
@@ -17,10 +22,6 @@ export function getIconString(champ_name) {
     }
     if(champTitle=== "Kogmaw"){
         champTitle="KogMaw"
-    }
-
-    if(champTitle==="JarvanIv"){
-      champTitle="JarvanIV"
     }
 
     return dataDragonIcon + champTitle + "_0.jpg"

@@ -121,7 +121,7 @@ class App extends React.Component {
           return response.json()
         })
         .then(data => {
-          console.log(JSON.stringify(data))
+          //console.log(JSON.stringify(data))
           this.setState({
             playerStats: data,
             champ: false,
@@ -146,12 +146,11 @@ class App extends React.Component {
   }
 
 
-
   handlePopoverClick(name){
     this.handlePopoverClose()
     this.setState({
       name: name
-    })
+    },this.searchStats)
     
   }
 
