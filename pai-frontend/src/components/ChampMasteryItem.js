@@ -74,7 +74,7 @@ class GameHistoryItem extends React.Component{
                             />
                             <CardContent className={classes.content} >
                                 <Typography>
-                                    LVL {mastery.champion_level}
+                                    LVL {mastery.champion_level} {champTitle}
                                 </Typography>
                                 <Typography>
                                     {mastery.champion_points}                 

@@ -1,48 +1,53 @@
 import React from 'react';
-import { Grid, Button, TextField, Card, CardActionArea, CardContent, CardMedia, Typography, Popper } from '@material-ui/core';
+import { Grid, Button, TextField, Card, CardActionArea, CardContent, CardMedia, Typography, Popper, CircularProgress } from '@material-ui/core';
 import ChampionInfo from './components/ChampionInfo'
 import { withStyles } from '@material-ui/styles'
 import PlayerInfo from './components/PlayerInfo'
-import {getChampTitle, getIconString} from './components/Helpers'
-import{servers} from './components/Data'
+import { getChampTitle, getIconString } from './components/Helpers'
+import { servers } from './components/Data'
+import InfoBrick from './components/InfoBrick';
 
 
 const styles = theme => ({
 
- card: {
-      display: 'flex',
-      //flexDirection: 'row-reverse',
-      //justifyContent: 'space-evenly',
-      flexWrap: 'wrap'
+  card: {
+    display: 'flex',
+    //flexDirection: 'row-reverse',
+    //justifyContent: 'space-evenly',
+    flexWrap: 'wrap'
   },
   icon: {
-      width: 90,
-      height: 90,
+    width: 90,
+    height: 90,
   },
   content: {
-      width: 200,
-      paddingTop: 8,
-      paddingBottom: 8,
-      paddingLeft: 6,
-      paddingRight: 6,
+    width: 200,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 6,
+    paddingRight: 6,
 
   },
   option: {
     background: '#484d6d',
     color: "white",
     '&:hover': {
-      background:'#2d3044'
+      background: '#2d3044'
     }
   },
-  list:{
+  list: {
     color: "white",
     background: '#484d6d',
   },
-  menuPaper:{
+  menuPaper: {
     background: '#484d6d',
   },
-  input:{
+  input: {
     color: "white",
+  },
+  margin:{
+    marginRight:'-16px',
+    marginLeft:'-16px',
   }
 })
 
@@ -62,15 +67,18 @@ class App extends React.Component {
       player: false,
       champStats: null,
       playerStats: null,
-      anchorEl:null,
+      anchorEl: null,
+      loading: false,
+      status: 200,
+      message: null,
     }
 
     this.handleServerChange = this.handleServerChange.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
     this.searchStats = this.searchStats.bind(this)
-    this.handlePopoverOpen=this.handlePopoverOpen.bind(this)
-    this.handlePopoverClose=this.handlePopoverClose.bind(this)
-    this.handlePopoverClick=this.handlePopoverClick.bind(this)
+    this.handlePopoverOpen = this.handlePopoverOpen.bind(this)
+    this.handlePopoverClose = this.handlePopoverClose.bind(this)
+    this.handlePopoverClick = this.handlePopoverClick.bind(this)
   }
 
 
@@ -98,10 +106,10 @@ class App extends React.Component {
       name: event.target.value
     })
 
-    if(event.target.value.length>2){
+    if (event.target.value.length > 2) {
       this.handlePopoverOpen(event)
     }
-    else{
+    else {
       this.handlePopoverClose()
     }
   }
@@ -114,12 +122,14 @@ class App extends React.Component {
 
   searchStats() {
     this.handlePopoverClose()
+    this.setState({ loading: true, player: false, champ: false })
     let champion = this.state.champions.filter(champ => champ.name === this.state.name.toLowerCase())
     if (champion.length > 0) {
       console.log('Search for champion ' + this.state.name);
 
       fetch(champStatsGet + this.state.name)
         .then(response => {
+          this.setState({ status: response.status})
           return response.json()
         })
         .then(data => {
@@ -127,7 +137,8 @@ class App extends React.Component {
           this.setState({
             champStats: data,
             champ: true,
-            player: false
+            player: false,
+            loading: false,
           })
         });
     }
@@ -136,6 +147,7 @@ class App extends React.Component {
 
       fetch(playerStatsGet + "region=" + this.state.server.value + "&name=" + this.state.name)
         .then(response => {
+          this.setState({ status: response.status})
           return response.json()
         })
         .then(data => {
@@ -143,65 +155,67 @@ class App extends React.Component {
           this.setState({
             playerStats: data,
             champ: false,
-            player: true
+            player: true,
+            loading: false,
+            message: data.message
           })
-        });
-
+        })
     }
   }
 
-  handlePopoverOpen(event){
-    if(this.state.champions.filter(champ => champ.name.includes(this.state.name.toLowerCase())).length>0)
+  handlePopoverOpen(event) {
+    if (this.state.champions.filter(champ => champ.name.includes(this.state.name.toLowerCase())).length > 0)
+      this.setState({
+        anchorEl: event.target
+      })
+  }
+
+  handlePopoverClose() {
     this.setState({
-      anchorEl: event.target
+      anchorEl: null
     })
   }
 
-  handlePopoverClose(){
-      this.setState({
-          anchorEl:null
-        })
-  }
 
-
-  handlePopoverClick(name){
+  handlePopoverClick(name) {
     this.handlePopoverClose()
     this.setState({
       name: name
-    },this.searchStats)
-    
+    }, this.searchStats)
+
   }
 
   render() {
 
     const open = Boolean(this.state.anchorEl);
     const id = open ? 'popover' : undefined;
-    const{classes}=this.props
-    
-    let key=0
-    let popoverContent=<div/>
-    if(open){
-      popoverContent=this.state.champions.filter(champ => champ.name.includes(this.state.name.toLowerCase())).map((champ)=>{
+    const { classes } = this.props
+
+    let key = 0
+    let popoverContent = <div />
+    if (open) {
+      popoverContent = this.state.champions.filter(champ => champ.name.includes(this.state.name.toLowerCase())).map((champ) => {
 
         let champTitle = getChampTitle(champ.name)
         let champIcon = getIconString(champ.name)
 
-        return(<Card key={key++}>
-        <CardActionArea  className={classes.card} onClick={()=>this.handlePopoverClick(champ.name)} >
-          <CardMedia
-            className={classes.icon}
-            component="img"
-            alt={champTitle}
-            image={champIcon}
-            title={champTitle}
-          />
-          <CardContent className={classes.content}>
-            <Typography component="h4" variant="h4">
-              {champTitle}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>)})
+        return (<Card key={key++}>
+          <CardActionArea className={classes.card} onClick={() => this.handlePopoverClick(champ.name)} >
+            <CardMedia
+              className={classes.icon}
+              component="img"
+              alt={champTitle}
+              image={champIcon}
+              title={champTitle}
+            />
+            <CardContent className={classes.content}>
+              <Typography component="h4" variant="h4">
+                {champTitle}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>)
+      })
     }
 
 
@@ -211,12 +225,14 @@ class App extends React.Component {
         container
         justify="center"
         direction="column"
-        spacing={2}>
-        <Grid item>
+        spacing={2}
+        className={classes.margin}>
           <Grid container
-            spacing={2}
+            item
             alignItems='center'
-            justify='center'>
+            justify='center'
+            spacing={2}
+            className={classes.margin}>
             <Grid item xs={6}>
               <TextField
                 id="standard-basic"
@@ -225,21 +241,21 @@ class App extends React.Component {
                 onChange={this.handleNameChange}
                 onKeyDown={this.onKeyPress}
                 color="secondary"
-                fullWidth 
+                fullWidth
                 autoFocus={true}
                 InputProps={{
                   className: classes.input
-                }}/>
-                <Popper
-                  id={id}
-                  open={open}
-                  anchorEl={this.state.anchorEl}
-                  onClose={this.handlePopoverClose}
-                  children
-                  placement='bottom-start'
-                >
-                    {popoverContent}
-                </Popper>
+                }} />
+              <Popper
+                id={id}
+                open={open}
+                anchorEl={this.state.anchorEl}
+                onClose={this.handlePopoverClose}
+                children
+                placement='bottom-start'
+              >
+                {popoverContent}
+              </Popper>
             </Grid>
             <Grid item xs={1}>
               <TextField
@@ -251,9 +267,9 @@ class App extends React.Component {
                 onKeyDown={this.onKeyPress}
                 color="secondary"
                 SelectProps={{
-                  className:classes.list,
-                  MenuProps:{
-                    classes:{
+                  className: classes.list,
+                  MenuProps: {
+                    classes: {
                       paper: classes.menuPaper,
                     },
                   }
@@ -273,18 +289,20 @@ class App extends React.Component {
             </Button>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item>
           <Grid
+            item
             container
             spacing={2}
             justify="center"
             alignItems="center"
-            direction="column">
-            {this.state.champ && <ChampionInfo champStats={this.state.champStats} />}
-            {this.state.player && <PlayerInfo playerStats={this.state.playerStats} />}
+            direction="column"
+            className={classes.margin}>
+            {this.state.champ && this.state.status === 200 && <ChampionInfo champStats={this.state.champStats} />}
+            {this.state.player && this.state.status === 200 && <PlayerInfo playerStats={this.state.playerStats} />}
+            {this.state.loading && <CircularProgress color="secondary" />}
+            {this.state.status !== 200 && !this.state.loading && <InfoBrick prefix={this.state.status + ": "} value={this.state.message} xs={6} />}
           </Grid>
-        </Grid>
+
       </Grid>
     )
   }

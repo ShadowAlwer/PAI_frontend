@@ -32,7 +32,7 @@ const styles = theme => ({
 
         display: 'flex',
         background: 'linear-gradient(270deg, #00dafb, #fbea00, #fb2300, #02b900, #fb00db)',
-        backgroundSize: '1000% 1000%',
+        backgroundSize: '900% 900%',
 
         //WebkitAnimation: 'AnimationName 31s ease infinite',
         MozAnimation: `$${AnimationName} 31s ease infinite`,
