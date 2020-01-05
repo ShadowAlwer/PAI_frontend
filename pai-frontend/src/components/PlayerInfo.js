@@ -74,7 +74,7 @@ const styles = theme => ({
     },
 })
 
-const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/9.23.1/img/profileicon/"
+const dataDragonIcon = "http://ddragon.leagueoflegends.com/cdn/"
 
 class PlayerInfo extends React.Component {
 
@@ -83,11 +83,15 @@ class PlayerInfo extends React.Component {
 
         this.state = {
             playerStats: props.playerStats,
+            version:props.version,
         }
+
+        
 
     }
 
     static getDerivedStateFromProps(props, state) {
+
         let nameProps = props.playerStats.name
         let nameState = state.playerStats.name
         console.log(nameProps !== nameState)
@@ -101,7 +105,7 @@ class PlayerInfo extends React.Component {
 
 
     render() {
-        let playerIcon = dataDragonIcon + this.state.playerStats.profile_icon_id + ".png"
+        let playerIcon = dataDragonIcon + this.state.version + '/img/profileicon/' + this.state.playerStats.profile_icon_id + ".png"
         let playerName = this.state.playerStats.name
         const { classes } = this.props
 

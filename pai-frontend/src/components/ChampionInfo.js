@@ -74,7 +74,8 @@ class ChampionInfo extends React.Component {
         super(props)
 
         this.state = {
-            champStats: props.champStats
+            champStats: props.champStats,
+            version: props.version,
         }
     }
 
@@ -147,7 +148,8 @@ class ChampionInfo extends React.Component {
                 <Grid item container xs={12} className={classes.card} spacing={2}>
                     <Grid item xs={1} />
                     <InfoBrick prefix="CS per min" value={this.state.champStats.cs_per_minute.toFixed()} />
-                    <InfoBrick prefix="First item" value={this.state.champStats.first_item_id} image />
+                    <InfoBrick prefix="First item" value={this.state.champStats.first_item_id} image version={this.state.version}  />
+                    <InfoBrick prefix="Rune" value={this.state.champStats.first_item_id} image link={this.state.champStats.rune_link} />
                 </Grid>
                 <Grid item container xs={12} className={classes.footer} spacing={2} >
                     <Grid item xs={1} />

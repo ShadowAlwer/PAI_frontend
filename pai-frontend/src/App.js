@@ -91,6 +91,17 @@ class App extends React.Component {
         //console.log(JSON.stringify(data))
         this.setState({ champions: data })
       });
+
+      fetch('/api/game_version')
+        .then(response=>{
+            return response.json()
+        })
+        .then(data=>{
+            console.log(JSON.stringify(data))
+            this.setState({
+                version: data.game_version
+            })
+        })
   }
 
 
@@ -297,8 +308,8 @@ class App extends React.Component {
             alignItems="center"
             direction="column"
             className={classes.margin}>
-            {this.state.champ && this.state.status === 200 && <ChampionInfo champStats={this.state.champStats} />}
-            {this.state.player && this.state.status === 200 && <PlayerInfo playerStats={this.state.playerStats} />}
+            {this.state.champ && this.state.status === 200 && <ChampionInfo champStats={this.state.champStats} version={this.state.version} />}
+            {this.state.player && this.state.status === 200 && <PlayerInfo playerStats={this.state.playerStats} version={this.state.version} />}
             {this.state.loading && <CircularProgress color="secondary" />}
             {this.state.status !== 200 && !this.state.loading && <InfoBrick prefix={this.state.status + ": "} value={this.state.message} xs={6} />}
           </Grid>
